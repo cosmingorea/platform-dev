@@ -10,13 +10,6 @@ matrix:
   BEHAT_BROWSER:
     - chrome
     - firefox
-  STRES_TEST_ME:
-    - 1
-    - 2
-    - 3
-    - 4
-    - 5
-    - 6
 
 services:
   # centos 6 + httpd + php${FPFIS_PHP_VERSION}
@@ -26,7 +19,9 @@ services:
       - DOCUMENT_ROOT=/test/platform/build
   # centos 6 + mysql community
   mysql:
-    image: fpfis/mysql${FPFIS_PHP_VERSION}
+    image: percona/percona-server:5.6
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes}
   # centos 6 + redis
   redis:
     image: fpfis/redis
