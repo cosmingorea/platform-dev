@@ -47,7 +47,6 @@ pipeline:
 
   # Step name "prepare"
   prepare-php:
-    group: prepare
     # Use php${FPFIS_PHP_VERSION} image
     image: fpfis/php${FPFIS_PHP_VERSION}-dev
     # Run the following commands
@@ -57,7 +56,6 @@ pipeline:
       - composer install --ansi
 
   prepare-database:
-    group: prepare
     # Use php${FPFIS_PHP_VERSION} image
     image: fpfis/mysql56
     # Run the following commands
