@@ -37,6 +37,7 @@ services:
   selenium:
     image: selenium/standalone-${BEHAT_BROWSER}
     environment:
+      - DISPLAY=:99
       - SE_OPTS=-log /tmp/selenium.log
 
 # Start a pipeline ( sets of steps )
