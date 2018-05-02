@@ -50,6 +50,7 @@ default:
         base_url: '{{ behat.base_url }}'
         endpoint: '/poetry/notification'
     Behat\MinkExtension:
+      browser_name: '{{ behat.browser.name }}'
       goutte: ~
       javascript_session: 'selenium2'
       selenium2:
