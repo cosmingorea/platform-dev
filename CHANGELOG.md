@@ -34,6 +34,7 @@
   * NEPT-553 - Nexteuropa_newsroom upgraded
   * NEPT-391 - Remove Flexible Purge module
 
+
 ### New features (For more details on each feature, see the README.md file at the root of the feature's folder)
   * NEPT-79 - Performance/Varnish - An administrator can enable the web frontend cache control feature through Feature set
   * NEPT-80 - Performance/Varnish - Automatically clear the web frontend cache of particular content when an action is performed on it
