@@ -35,10 +35,10 @@ services:
     image: fpfis/solr5
   # Selenium standalone
   selenium:
-    image: selenium/standalone-${BEHAT_BROWSER}:2.53.1
+    image: selenium/standalone-${BEHAT_BROWSER}:2.53.0
     environment:
       - DISPLAY=:99
-      - SE_OPTS=-log /tmp/selenium.log
+      - SE_OPTS=-debug
 
 # Start a pipeline ( sets of steps )
 # Be advised that the container will be a new one every step
