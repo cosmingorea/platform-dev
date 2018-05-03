@@ -26,6 +26,16 @@ services:
     environment:
       - DISPLAY=:99
       - SE_OPTS=-debug
+  tunnel:
+    image: fpfis/drone-frpc-plugin:latest
+    when:
+      event: [ push, pull_request, tag ]
+    secrets: [ frpc_token, frpc_server ]
+    environment:
+      - PLUGIN_ENDPOINT=web:8080
+      - PLUGIN_GEN_AUTH=yes
+      - PLUGIN_DOMAIN=platform-${DRONE_BUILD_NUMBER}-${DRONE_JOB_NUMBER}.ci.fpfis.tech.ec.europa.eu
+      - PLUGIN_URL_OUTPUT_FILE=/test/toolkit/.frpc
 
 # Start a pipeline ( sets of steps )
 # Be advised that the container will be a new one every step
