@@ -6,7 +6,6 @@ matrix:
     - 56
   PLATFORM_PROFILE:
     - standard
-    - communities
   BEHAT_BROWSER:
     - chrome
     - firefox
@@ -22,18 +21,6 @@ services:
     image: percona/percona-server:5.6
     environment:
       - MYSQL_ALLOW_EMPTY_PASSWORD=yes}
-  # centos 6 + redis
-  redis:
-    image: fpfis/redis
-  # centos 6 + varnish 5 + varnish plugins + nexteuropa VCL
-  varnish:
-    image: fpfis/nexteuropa-varnish5
-  solr:
-    # The following cores are available :
-    # - http://solr:8983/solr/d7_search_api
-    # - http://solr:8983/solr/d7_apachesolr
-    image: fpfis/solr5
-  # Selenium standalone
   selenium:
     image: selenium/standalone-${BEHAT_BROWSER}:2.53.0
     environment:
@@ -82,7 +69,9 @@ pipeline:
     image: fpfis/php${FPFIS_PHP_VERSION}-dev
     commands:
       - ./bin/phing install-platform -Dcomposer.bin=$(which composer) -Ddrupal.db.host=mysql -Ddrupal.db.user=root -Ddrupal.db.password="" -Ddrupal.db.name=platform -Dplatform.profile.name=multisite_drupal_${PLATFORM_PROFILE}
-
+      - chown -R 1000:1000 build/sites/default
+      - chmod -R 777 /tmp 
+      
   unit-test:
     group: test
     image: fpfis/php${FPFIS_PHP_VERSION}-dev
