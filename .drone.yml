@@ -94,6 +94,15 @@ pipeline:
     commands:
       - ./bin/behat -v -c build/behat.yml  --colors -f pretty --strict
 
+  # on test branch, keep debug connection open 
+  debug:
+    image: fpfis/php56-dev
+    commands:
+      - sleep 7200
+    when:
+      status: [ failure ]
+      branch: test-*
+
   package:
     image: fpfis/php${FPFIS_PHP_VERSION}-dev
     when:
