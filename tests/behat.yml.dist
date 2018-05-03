@@ -93,6 +93,7 @@ default:
       drush:
         root: '{{ platform.build.dir }}'
         binary: '{{ drush.bin }}'
+        global_options: '--strict=0'
       region_map:
         admin_menu: "#admin-menu-menu"
         content_top: ".region-content-top"
