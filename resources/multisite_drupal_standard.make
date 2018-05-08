@@ -151,7 +151,7 @@ projects[context_entity_field][version] = "1.1"
 projects[context_entity_field][patch][] = https://www.drupal.org/files/add-entity-references.patch
 
 projects[context_og][subdir] = "contrib"
-projects[context_og][version] = "2.1" 
+projects[context_og][version] = "2.1"
 
 projects[ctools][subdir] = "contrib"
 projects[ctools][version] = "1.11"
@@ -691,10 +691,15 @@ projects[tmgmt][patch][] = https://www.drupal.org/files/issues/tmgmt-test_transl
 ; https://webgate.ec.europa.eu/CITnet/jira/browse/NEPT-60
 projects[tmgmt][patch][] = https://www.drupal.org/files/issues/2812863.patch
 
+; #2362321 : Check source length limits
+; https://www.drupal.org/node/2362321
+; https://webgate.ec.europa.eu/CITnet/jira/browse/NEPT-1802
+projects[tmgmt][patch][] = https://www.drupal.org/files/issues/2018-04-12/check_source_length-d7-2362321-37.patch
+
 projects[token][subdir] = "contrib"
 projects[token][version] = "1.7"
 ; #1058912: Prevent recursive tokens
-; https://www.drupal.org/node/1058912          
+; https://www.drupal.org/node/1058912
 projects[token][patch][] = https://www.drupal.org/files/token-1058912-88-limit-token-depth.patch
 
 projects[token_filter][subdir] = "contrib"
