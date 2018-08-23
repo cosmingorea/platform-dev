@@ -1,7 +1,7 @@
 @api
 Feature: Check Piwik
   In order to check if the type attribute is set for the Piwik element.
-  As an administrator
+  As a user
   I want to check Piwik is available.
   # Advanced PIWIK rules functionality
   In order to make PIWIK analysis more granular and accurate
@@ -12,29 +12,43 @@ Feature: Check Piwik
     Given these modules are enabled
       | modules            |
       | nexteuropa_piwik   |
-    And I am logged in as a user with the "PIWIK administrator" role
-    And The piwik is well configured with id "1234" and paths "build"
+    And The piwik is configured with id "1234" and paths "build"
 
   Scenario: Check if the PIWIK script is embedded into the page correctly
     Given I am on homepage
-    Then the response should contain "{\"utility\":\"piwik\",\"siteID\":\"1234\",\"sitePath\":[\"build\"],\"is404\":false,\"is403\":false,\"instance\""
+    Then the response should contain "{\"utility\":\"piwik\",\"siteID\":\"1234\",\"sitePath\":[\"build\"],\"is404\":false,\"is403\":false,\"instance\":\"\"}"
+    # The meta tag below must be present in order that the PIWIK script works correctly (see NEPT-1042).
+    And the response should contain the meta tag with the "X-UA-Compatible" name and the "IE=edge" content
 
   Scenario: Check if the PIWIK script flags non existing pages
     Given I go to "falsepage"
-    Then the response should contain "{\"utility\":\"piwik\",\"siteID\":\"1234\",\"sitePath\":[\"build\"],\"is404\":true,\"is403\":false,\"instance\""
+    Then the response should contain "{\"utility\":\"piwik\",\"siteID\":\"1234\",\"sitePath\":[\"build\"],\"is404\":true,\"is403\":false,\"instance\":\"\"}"
+    # The meta tag below must be present in order that the PIWIK script works correctly (see NEPT-1042).
+    And the response should contain the meta tag with the "X-UA-Compatible" name and the "IE=edge" content
 
   Scenario: Check if the PIWIK script flags forbidden pages
     Given these modules are enabled
       | modules            |
       | ecas_env           |
     And I go to "ecaslogout"
-    Then the response should contain "{\"utility\":\"piwik\",\"siteID\":\"\",\"sitePath\":[\"\"],\"is404\":false,\"is403\":true,\"instance\":\"\"}"
+    Then the response should contain "{\"utility\":\"piwik\",\"siteID\":\"1234\",\"sitePath\":[\"build\"],\"is404\":false,\"is403\":true,\"instance\":\"\"}"
     # The meta tag below must be present in order that the PIWIK script works correctly (see NEPT-1042).
     And the response should contain the meta tag with the "X-UA-Compatible" name and the "IE=edge" content
+
+  Scenario: Check if the PIWIK script conforms with configured paths
+    Given The piwik is configured with id "1234" and paths "build/content"
+    When I am on the homepage
+    Then the response should not contain "{\"utility\":\"piwik\",\"siteID\":\"1234\",\"sitePath\":[\"build\/content\"],\"is404\":false,\"is403\":false,\"instance\":\"\"}"
+    And "page" content:
+      | title       | field_ne_body      | status |
+      | Title piwik | Body content PIWIK | 1      |
+    And I go to "content/title-piwik"
+    Then the response should contain "{\"utility\":\"piwik\",\"siteID\":\"1234\",\"sitePath\":[\"build\/content\"],\"is404\":false,\"is403\":false,\"instance\":\"\"}"
 
   @delete_piwik_rules
   Scenario: View advanced PIWIK rules.
     Given the nexteuropa_piwik module is configured to use advanced PIWIK rules
+    And I am logged in as a user with the "PIWIK administrator" role
     And the following PIWIK rules:
       | Rule language | Rule path       | Rule path type | Rule section         |
       | all           | ^admin/*        | regexp         | Regexp based section |
@@ -48,6 +62,7 @@ Feature: Check Piwik
   @javascript @delete_piwik_rules
   Scenario: Add a PIWIK rule.
     Given the nexteuropa_piwik module is configured to use advanced PIWIK rules
+    And I am logged in as a user with the "PIWIK administrator" role
     When I go to "/admin/config/system/webtools/piwik/advanced_rules"
     And I click "Add piwik rule"
     And I fill in "Site section" with "Regexp based section"
@@ -63,6 +78,7 @@ Feature: Check Piwik
   @delete_piwik_rules
   Scenario: Remove a PIWIK rule.
     Given the nexteuropa_piwik module is configured to use advanced PIWIK rules
+    And I am logged in as a user with the "PIWIK administrator" role
     And "page" content:
       | title     | field_ne_body         |
       | Test page | The test body content |
